@@ -1,0 +1,221 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      >
+    <h:head>
+        <title>Products</title>
+        <h:outputStylesheet library="css" name="bootstrap.min.css" />
+        <h:outputStylesheet library="css" name="font-awesome.min.css" />
+        <h:outputStylesheet library="css" name="prettyPhoto.css" />
+        <h:outputStylesheet library="css" name="price-range.css" />
+        <h:outputStylesheet library="css" name="animate.css" />
+        <h:outputStylesheet library="css" name="main.css" />
+        <h:outputStylesheet library="css" name="responsive.css" />
+    </h:head>
+    <h:body>
+        <header id="header"><!--header-->
+            <h:form>
+                <div class="header-middle"><!--header-middle-->
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-sm-4">
+                                <div class="logo pull-left">
+                                    <a href="Home.xhtml"><img src="images/home/logo.png" alt="" /></a>
+                                </div>
+                            </div>
+                            <div class="col-sm-8">
+                                <div class="shop-menu pull-right">
+                                    <ul>
+                                        <li>#{login.username}'s Cart !! </li>
+                                    </ul>
+                                    
+                                    <ul class="nav navbar-nav">
+                                       <li><a href="Home.xhtml"><i class="fa fa-home"></i> Home</a></li>
+                                        <li><a href="Cart.xhtml"><i class="fa fa-shopping-cart"></i> Cart</a></li>
+                                        <li><a href="History.xhtml"><i class="fa fa-history"></i> History</a></li>                                      
+                                        <li><h:commandLink onclick="if (!confirm('Sure to logout ?')) {
+                                                return false;
+                                            }
+                                            ;
+                                            return true;
+                                            " action="#{login.logout()}"><i class="fa fa-unlock"></i> Logout</h:commandLink></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div><!--/header-middle-->
+            </h:form>
+        </header>
+
+        <section id="cart_items">
+            <div class="container">
+
+                <div class="review-payment">
+                    <h2>Shopping Cart</h2>
+                </div>
+
+                <div class="table-responsive cart_info">
+                    <h:form>
+                        <table class="table table-condensed">
+                            <thead>
+                                <tr class="cart_menu">
+                                    <td class="image">Item</td>
+                                    <td class="description"></td>
+                                    <td class="price">Price</td>
+                                    <td class="quantity">Quantity</td>
+                                    <td class="total">Total</td>
+                                    <td></td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <ui:repeat value="#{login.cart.entrySet().toArray()}" var="product">
+                                    <tr>
+                                        <td class="cart_product">
+                                            <h4>#{product.key.getName()}</h4>
+                                        </td>
+                                        <td class="cart_description">
+                                            <p>#{product.key.getCategory()}</p>
+                                            <p>Available #{product.key.getStock()}</p>
+                                        </td>
+                                        <td class="cart_price">
+                                            <p>#{product.key.getCost()} SEK</p>
+                                        </td>
+                                        <td class="cart_quantity">
+                                            <div class="cart_quantity_button">
+                                                <h:commandLink class="cart_quantity_down" actionListener="#{login.reduceInCart(product.key)}" value="-"> </h:commandLink>
+                                                <input jsfc="h:inputText" class="cart_quantity_input" type="text" name="quantity" value="#{login.cart[product.key]}" size="3" disabled="true"/>
+                                                <h:commandLink class="cart_quantity_up" actionListener="#{login.addToCart(product.key)}" value="+"> </h:commandLink>
+                                            </div>
+                                        </td>
+                                        <td class="cart_total">
+                                            <p class="cart_total_price">#{product.key.getCost() * login.cart[product.key]} SEK</p>
+                                        </td>
+                                        <td class="cart_delete">
+                                            <h:commandLink class="cart_quantity_delete" onclick="if (!confirm('Delete from cart ?')) {
+                                                        return false;
+                                                    }
+                                                    ;
+                                                    return true;
+                                                    " actionListener="#{login.deleteFromCart(product.key)}"><i class="fa fa-times"></i></h:commandLink>
+                                        </td>
+                                    </tr>
+                                </ui:repeat>
+                                <tr>
+                                    <td colspan="1">&nbsp;</td>
+                                    <td colspan="2">#{login.errInfo}</td>
+                                    <td colspan="2">
+                                        <table class="table table-condensed total-result">
+                                            <tr>
+                                                <td>Cart Sub Total</td>
+                                                <td>#{login.cartTotal} SEK</td>
+                                            </tr>
+                                            <tr class="shipping-cost">
+                                                <td>Shipping Cost</td>
+                                                <td>Free</td>										
+                                            </tr>
+                                            <tr>
+                                                <td>Total</td>
+                                                <td><span>#{login.cartTotal} SEK</span></td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </h:form>
+                </div>
+
+                <div class="shopper-informations">
+                    <div class="row">
+                        <div class="display:none;">
+                            <div class="display:none;">
+                                <p>Checkout Information</p>
+                                <form>
+                                </form>
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <div class="shopper-info">
+                                <p>Bank Information</p>
+                                <form>
+                                    <input type="text" placeholder="Bank Name"/>
+                                    <input type="text" placeholder="Account Number"/>
+                                    <input type="password" placeholder="Password"/>
+                                </form>
+                            </div>
+                        </div>
+                        <div class="col-sm-1">
+                            <h2 class="org">OR</h2>
+                        </div>
+                        <div class="col-sm-3">
+                            <div class="shopper-info">
+                                <p>Credit Card Information</p>
+                                <form>
+                                    <input type="text" placeholder="Card Number"/>
+                                    <input type="text" placeholder="Expiry in mm/yy"/>
+                                    <input type="text" placeholder="CVV"/>
+                                </form>
+
+                            </div>
+                        </div>
+
+
+                        <div class="col-sm-5 clearfix">
+                            <div class="bill-to">
+                                <p>Billing / Shipping Address</p>
+                                <div class="form-one">
+                                    <form>
+                                        <input type="text" placeholder="Email*"/>
+                                        <input type="text" placeholder="Title"/>
+                                        <input type="text" placeholder="First Name *"/>
+                                        <input type="text" placeholder="Middle Name"/>
+                                        <input type="text" placeholder="Last Name *"/>
+                                        <input type="text" placeholder="Address 1 *"/>
+                                        <input type="text" placeholder="Address 2"/>
+                                    </form>
+                                </div>
+                                <div class="form-two">
+                                    <h:form>
+                                        <input type="text" placeholder="Zip / Postal Code *"/>
+                                        <select>
+                                            <option>-- Country --</option>
+                                            <option>Sweden</option>
+                                            <option>Norway</option>
+                                            <option>UK</option>
+                                            <option>India</option>
+                                            <option>Finland</option>
+                                        </select>
+                                        <input type="text" placeholder="Phone *"/>
+                                        <input type="text" placeholder="Mobile Phone"/>
+                                        <input type="text" placeholder="Fax"/>
+                                        <h:commandLink class="btn btn-primary" action="#{login.checkout}">Checkout</h:commandLink>
+                                    </h:form>
+                                </div>
+                            </div>
+                        </div>				
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section> <!--/#cart_items-->
+
+
+        <footer id="footer"><!--Footer-->
+
+            <div class="footer-bottom">
+                <div class="container">
+                    <div class="row">
+                        <p class="pull-right">Designed by <span><a target="_blank" href="http://www.themeum.com">Themeum</a></span></p>
+                    </div>
+                </div>
+            </div>
+
+        </footer><!--/Footer-->
+    </h:body>
+</html>
+

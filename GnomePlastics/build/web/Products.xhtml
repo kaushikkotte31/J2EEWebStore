@@ -1,0 +1,120 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      >
+    <h:head>
+        <title>Products</title>
+        <h:outputStylesheet library="css" name="bootstrap.min.css" />
+        <h:outputStylesheet library="css" name="font-awesome.min.css" />
+        <h:outputStylesheet library="css" name="prettyPhoto.css" />
+        <h:outputStylesheet library="css" name="price-range.css" />
+        <h:outputStylesheet library="css" name="animate.css" />
+        <h:outputStylesheet library="css" name="main.css" />
+        <h:outputStylesheet library="css" name="responsive.css" />
+    </h:head>
+    <h:body>
+        <header id="header"><!--header-->
+            <h:form>
+                <div class="header-middle"><!--header-middle-->
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-sm-4">
+                                <div class="logo pull-left">
+                                    <a href="Home.xhtml"><img src="images/home/logo.png" alt="" /></a>
+                                </div>
+                            </div>
+                            <div class="col-sm-8">
+                                <div class="shop-menu pull-right">
+                                    <ul class="nav navbar-nav">
+
+                                        <li><a href="Admin.xhtml"><i class="fa fa-home"></i> Home</a></li>
+                                        <li><a href="Products.xhtml"> Products </a></li>                                      
+                                        <li><h:commandLink onclick="if (!confirm('Sure to logout ?')) {
+                                                    return false;
+                                                }
+                                                ;
+                                                return true;
+                                                           " action="#{login.logout()}"><i class="fa fa-unlock"></i> Logout</h:commandLink></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div><!--/header-middle-->
+            </h:form>
+        </header>
+
+        <section id="cart_items">
+            <div class="container">
+
+                <div class="review-payment">
+                    <h2>List of Products</h2>
+                </div>
+
+                <div class="table-responsive cart_info">
+                    <h:form>
+                        <table class="table table-condensed">
+                            <thead>
+                                <tr class="cart_menu">
+                                    <td class="image">Name</td>
+                                    <td class="description">Category</td>                                
+                                    <td class="total">Cost</td>
+                                    <td class="description">Stock</td>
+                                    <td class="description">Delete Product</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <ui:repeat value="#{admin.prodList}" var="product">
+                                    <tr>
+                                        <td class="cart_product">
+                                            <h4>#{product.name}</h4>
+                                        </td>
+                                        <td class="cart_description">
+                                            <p>#{product.category}</p>
+                                        </td>
+
+                                        <td class="cart_total">
+                                            <p class="cart_total_price">#{product.cost} SEK</p>
+                                        </td>
+                                        <td class="cart_description">
+                                            <p>#{product.stock}</p>
+                                        </td>
+                                        
+                                        <td class="cart_delete">
+                                            <h:commandLink class="cart_quantity_delete" onclick="if (!confirm('Delete product from inventory ?')) {
+                                                        return false;
+                                                    }
+                                                    ;
+                                                    return true;
+                                                    " actionListener="#{admin.deleteProduct(product.name)}"><i class="fa fa-times"></i></h:commandLink>
+                                        </td>
+                                        
+                                    </tr>
+                                </ui:repeat>
+
+                            </tbody>
+                        </table>
+                    </h:form>
+                </div>
+
+            </div>
+
+        </section> <!--/#cart_items-->
+
+
+        <footer id="footer"><!--Footer-->
+
+            <div class="footer-bottom">
+                <div class="container">
+                    <div class="row">
+                        <p class="pull-right">Designed by <span><a target="_blank" href="http://www.themeum.com">Themeum</a></span></p>
+                    </div>
+                </div>
+            </div>
+
+        </footer><!--/Footer-->
+    </h:body>
+</html>
+
